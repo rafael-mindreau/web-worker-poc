@@ -46,3 +46,5 @@ primeWorker.onmessage = ({ data: { message, payload: result } }) => {
     publishResult(result, 'parallel');
   }
 };
+
+main();
