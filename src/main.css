@@ -89,6 +89,9 @@ body {
   cursor: pointer;
 
   background-color: #808080;
+  border: 1px solid #606060;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .slider::-webkit-slider-thumb {
@@ -96,4 +99,5 @@ body {
   background-color: white;
   width: 20px;
   height: 20px;
+  border-radius: 50%;
 }

@@ -3,14 +3,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 require("@babel/register");
 
 const config = {
-  // entry: ['@babel/polyfill','./src/index.js'],
-  entry: {
-    bundle: ['@babel/polyfill','./src/index.js'],
-    primeWorker: './src/workers/primeWorker.js'
-  },
+  entry: ['@babel/polyfill','./src/index.js'],
   output: {
     path: __dirname + '/public',
-    filename: '[name].js'
+    filename: 'bundle.js'
   },
   module: {
     rules : [
@@ -18,6 +14,11 @@ const config = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: ['babel-loader']
+      },
+      {
+        test: /\.worker\.js$/,
+        use: ['worker-loader', 'babel-loader'],
+        include: [path.join(__dirname, 'src/workers')],
       },
       {
         test: /\.css$/,
