@@ -1,22 +1,23 @@
 import Controls from 'components/Controls';
 import Hero from 'components/Hero';
+import StatusBar, { updateWorkloadPill, updatePoolSizePill } from 'components/StatusBar';
 import publishResult from 'components/TableOfResults';
 import calculatePrimes from 'utils/calculatePrimes';
 import PrimeWorker from 'workers/prime.worker.js';
-import { START_WORK, CHANGE_WORKLOAD, WORK_FINISHED } from 'constants/constants';
+import {
+  START_WORK,
+  CHANGE_WORKLOAD,
+  WORK_FINISHED,
+  CHANGE_TAG,
+} from 'constants/constants';
+import uuid from 'uuid/v4';
 import 'main.css';
 
 // Amount of primes to search for
-let primesToCalculate = 10;
+let primesToCalculate = 0;
 
-// Initialize a Worker (= 1 extra separate thread we can use!)
-const primeWorker = new PrimeWorker();
-primeWorker.postMessage({ message: CHANGE_WORKLOAD, payload: primesToCalculate });
-
-// Start work for the main thread
-const createSerialWork = () => {
-  return calculatePrimes(primesToCalculate, 2);
-};
+// Pool for workers! Workers are eager to swim in this pool!
+const pool = {};
 
 // Entry point for the app
 const main = async () => {
@@ -25,26 +26,49 @@ const main = async () => {
   Controls({
     addToMain: () => {
       // Make work on the main UI thread
-      const result = createSerialWork();
+      const result = calculatePrimes(primesToCalculate, 2);
       publishResult(result, 'sequential');
     },
     addAsSeparate: () => {
       // Make work on a separate thread
+      // Create a new Worker
+      const primeWorker = new PrimeWorker();
+      primeWorker.postMessage({ message: CHANGE_WORKLOAD, payload: primesToCalculate });
+
+      const id = uuid();
+      primeWorker.postMessage({ message: CHANGE_TAG, payload: id });
       primeWorker.postMessage({ message: START_WORK });
+      pool[id] = { id, worker: primeWorker };
+
+      // When a worker has something to say, we listen in on it here
+      primeWorker.onmessage = ({ data: { message, payload: { primes: result, id } } }) => {
+        if (message === WORK_FINISHED) {
+          publishResult(result, 'parallel');
+          primeWorker.terminate();
+          delete pool[id];
+          updatePoolSizePill(Object.keys(pool).length);
+        }
+      };
+
+      updatePoolSizePill(Object.keys(pool).length);
     },
     changePrimesToCalculate: (newValue) => {
       // Handler for changing the workload
       primesToCalculate = newValue;
-      primeWorker.postMessage({ message: CHANGE_WORKLOAD, payload: primesToCalculate });
+
+      // Change workload for all workers in the pool
+      Object.keys(pool).forEach((workerId) => {
+        const worker = pool[workerId];
+        worker.postMessage({ message: CHANGE_WORKLOAD, payload: primesToCalculate });
+      });
+
+      updateWorkloadPill(primesToCalculate);
     },
   });
+  StatusBar({
+    initialPoolSize: Object.keys(pool).length,
+    initialWorkload: primesToCalculate,
+  });
 }
-
-// When the PrimeWorker has something to say, we listen in on it here
-primeWorker.onmessage = ({ data: { message, payload: result } }) => {
-  if (message === WORK_FINISHED) {
-    publishResult(result, 'parallel');
-  }
-};
 
 main();
