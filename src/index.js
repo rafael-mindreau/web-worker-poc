@@ -1,7 +1,7 @@
 import Controls from 'components/Controls';
 import Hero from 'components/Hero';
 import StatusBar, { updateWorkloadPill, updatePoolSizePill } from 'components/StatusBar';
-import publishResult from 'components/TableOfResults';
+import { announce, publish } from 'components/TableOfResults';
 import calculatePrimes from 'utils/calculatePrimes';
 import PrimeWorker from 'workers/prime.worker.js';
 import {
@@ -9,6 +9,8 @@ import {
   CHANGE_WORKLOAD,
   WORK_FINISHED,
   CHANGE_TAG,
+  PARALLEL_WORK_TYPE,
+  SERIAL_WORK_TYPE,
 } from 'constants/constants';
 import uuid from 'uuid/v4';
 import 'main.css';
@@ -26,8 +28,10 @@ const main = async () => {
   Controls({
     addToMain: () => {
       // Make work on the main UI thread
+      const id = uuid();
+      announce(id, SERIAL_WORK_TYPE);
       const result = calculatePrimes(primesToCalculate, 2);
-      publishResult(result, 'sequential');
+      publish(id, result);
     },
     addAsSeparate: () => {
       // Make work on a separate thread
@@ -36,6 +40,7 @@ const main = async () => {
       primeWorker.postMessage({ message: CHANGE_WORKLOAD, payload: primesToCalculate });
 
       const id = uuid();
+      announce(id, PARALLEL_WORK_TYPE);
       primeWorker.postMessage({ message: CHANGE_TAG, payload: id });
       primeWorker.postMessage({ message: START_WORK });
       pool[id] = { id, worker: primeWorker };
@@ -43,7 +48,7 @@ const main = async () => {
       // When a worker has something to say, we listen in on it here
       primeWorker.onmessage = ({ data: { message, payload: { primes: result, id } } }) => {
         if (message === WORK_FINISHED) {
-          publishResult(result, 'parallel');
+          publish(id, result);
           primeWorker.terminate();
           delete pool[id];
           updatePoolSizePill(Object.keys(pool).length);
