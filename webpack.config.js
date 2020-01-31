@@ -28,7 +28,8 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-        hash: true
+        hash: true,
+        title: 'Worker Demonstration'
     })
   ],
   resolve: {

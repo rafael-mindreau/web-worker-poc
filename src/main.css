@@ -32,7 +32,7 @@ body {
   margin-bottom: 20px;
 }
 
-.add-button {
+.add-button, .remove-button {
   padding: 10px 20px;
   background-color: #ffffff;
   border: 1px solid #cfcfcf;
@@ -54,6 +54,16 @@ body {
   background-color: #2966cf;
   border: 1px solid #325187;
   color: white;
+}
+
+.remove-button {
+  padding: 5px 10px;
+  background-color: #cf4729;
+  border: 1px solid #8b4030;
+  color: white;
+  font-size: 12px;
+  font-weight: 400;
+  border-radius: 20px;
 }
 
 .indicator {
