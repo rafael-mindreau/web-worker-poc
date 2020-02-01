@@ -6,7 +6,7 @@ export default ({
   const controlsContainer = document.createElement('div');
   controlsContainer.className = 'controls-container';
   controlsContainer.innerHTML = `
-    <h2>Workload</h2>
+    <h2>Primes</h2>
     <input id="primes-slider" min="0" max="1600000" step="1000" class="slider" type="range" value="0" />
     <h2>Schedule work</h2>
     <div class="controls-container">
