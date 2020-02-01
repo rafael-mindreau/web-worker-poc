@@ -5,6 +5,7 @@ body {
   margin: 0 auto;
   min-height: 100vh;
   background-color: #dfdfdf;
+  box-sizing: border-box;
 
   font-family: 'Heebo', sans-serif;
   font-weight: bold;
@@ -26,6 +27,27 @@ body {
   background-color: white;
   border-radius: 5px;
   width: 100%;
+}
+
+.row h1 {
+  margin: 3px 0;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.row:last-child {
+  margin-bottom: 100px;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content .pill {
+  margin: 10px 0;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .controls-container {
@@ -127,6 +149,7 @@ body {
 }
 
 .pill {
+  display: block;
   padding: 8px;
   margin-right: 10px;
 
@@ -149,4 +172,10 @@ body {
   background-color: #31a7fc;
   border: 1px solid #33719e;
   color: white;
+}
+
+.pill--color-yellow {
+  background-color: #fcd631;
+  border: 1px solid #bfa536;
+  color: black;
 }

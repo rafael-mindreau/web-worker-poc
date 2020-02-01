@@ -3,6 +3,7 @@ import Hero from 'components/Hero';
 import StatusBar, { updateWorkloadPill, updatePoolSizePill } from 'components/StatusBar';
 import { announce, publish } from 'components/TableOfResults';
 import calculatePrimes from 'utils/calculatePrimes';
+import { startBenchmark, endBenchmark } from 'utils/benchmark';
 import PrimeWorker from 'workers/prime.worker.js';
 import {
   START_WORK,
@@ -30,8 +31,15 @@ const main = async () => {
       // Make work on the main UI thread
       const id = uuid();
       announce(id, SERIAL_WORK_TYPE);
-      const result = calculatePrimes(primesToCalculate, 2);
-      publish(id, result);
+
+      // We delay the actual work so that the rendering for the announced item can happen first
+      // The UI would otherwise block before seeing the announced job
+      setTimeout(() => {
+        startBenchmark();
+        const result = calculatePrimes(primesToCalculate, 2);
+        const time = endBenchmark();
+        publish(id, result, time);
+      }, 200);
     },
     addAsSeparate: () => {
       // Make work on a separate thread
@@ -46,9 +54,9 @@ const main = async () => {
       pool[id] = { id, worker: primeWorker };
 
       // When a worker has something to say, we listen in on it here
-      primeWorker.onmessage = ({ data: { message, payload: { primes: result, id } } }) => {
+      primeWorker.onmessage = ({ data: { message, payload: { primes: result, id, time } } }) => {
         if (message === WORK_FINISHED) {
-          publish(id, result);
+          publish(id, result, time);
           primeWorker.terminate();
           delete pool[id];
           updatePoolSizePill(Object.keys(pool).length);
