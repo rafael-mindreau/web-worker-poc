@@ -34,7 +34,7 @@ export const publish = (id, result, time) => {
  */
 export const announce = (id, workType) => {
   const row = document.createElement('div');
-  row.className = 'row';
+  row.className = 'row shadow-near';
   row.id = id;
   row.innerHTML = `
     <h1>${id}</h1>
