@@ -14,7 +14,7 @@ import {
   SERIAL_WORK_TYPE,
 } from 'constants/constants';
 import uuid from 'uuid/v4';
-import 'main.css';
+import './main.css';
 
 // Amount of primes to search for
 let primesToCalculate = 0;

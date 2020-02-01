@@ -1,3 +1,5 @@
+import './TableOfResults.css';
+
 /**
  * For a given Worker ID, publish the eventual results
  * @param  {Number} id        The id for the work to be published to

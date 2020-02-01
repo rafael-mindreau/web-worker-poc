@@ -1,3 +1,5 @@
+import './Controls.css';
+
 export default ({
   addToMain,
   addAsSeparate,

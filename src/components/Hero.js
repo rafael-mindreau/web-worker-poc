@@ -1,3 +1,5 @@
+import './Hero.css'
+
 export default () => {
   const hero = document.createElement('div');
   hero.className = 'hero';

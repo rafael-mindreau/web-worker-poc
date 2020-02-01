@@ -1,0 +1,68 @@
+.controls-container {
+  margin-bottom: 20px;
+}
+
+.add-button, .remove-button {
+  padding: 10px 20px;
+  background-color: #ffffff;
+  border: 1px solid #cfcfcf;
+  color: black;
+  border-radius: 5px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+}
+
+.add-button--color-green {
+  background-color: #3e8c59;
+  border: 1px solid #3d654b;
+  color: white;
+}
+
+.add-button--color-blue {
+  background-color: #2966cf;
+  border: 1px solid #325187;
+  color: white;
+}
+
+.remove-button {
+  padding: 5px 10px;
+  background-color: #cf4729;
+  border: 1px solid #8b4030;
+  color: white;
+  font-size: 12px;
+  font-weight: 400;
+  border-radius: 20px;
+}
+
+.slider {
+  display: block;
+  -webkit-appearance: none;
+  margin: 20px 0;
+  width: 50%;
+
+  outline: none;
+  cursor: pointer;
+
+  background-color: #808080;
+  border: 1px solid #606060;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.slider.high-load {
+  background-color: #874242;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background-color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.slider.high-load::-webkit-slider-thumb {
+  background-color: #dd4747;
+}

@@ -1,3 +1,5 @@
+import './StatusBar.css';
+
 let statusBar;
 
 export default ({ initialPoolSize, initialWorkload }) => {
