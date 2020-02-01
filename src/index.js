@@ -39,7 +39,7 @@ const main = async () => {
         const result = calculatePrimes(primesToCalculate, 2);
         const time = endBenchmark();
         publish(id, result, time);
-      }, 200);
+      }, 500);
     },
     addAsSeparate: () => {
       // Make work on a separate thread
