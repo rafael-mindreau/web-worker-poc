@@ -3,10 +3,7 @@
 ![image](https://user-images.githubusercontent.com/1874332/73597537-444d8f80-452d-11ea-93c1-86d2f15a8ff2.png)
 
 ## Try it out
-```
-npm i
-npm run dev
-```
+https://rafael-mindreau.github.io/web-worker-poc/
 
 ## Dedicated Workers
 Dedicated Web Workers allow you to delegate some work to **a separate thread** instead of the main thread. This allows us to run JavaScript code **multi-threaded.**
