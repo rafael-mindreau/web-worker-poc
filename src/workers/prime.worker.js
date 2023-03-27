@@ -5,7 +5,7 @@ import {
   CHANGE_TAG,
 } from '../constants/constants';
 import calculatePrimes from '../utils/calculatePrimes';
-import { startBenchmark, endBenchmark } from 'utils/benchmark';
+import { startBenchmark, endBenchmark } from '../utils/benchmark';
 
 let workload = 0;
 let id = 'untagged';

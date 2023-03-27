@@ -1,10 +1,10 @@
-import Controls from 'components/Controls';
-import Hero from 'components/Hero';
-import StatusBar, { updateWorkloadPill, updatePoolSizePill } from 'components/StatusBar';
-import { announce, publish } from 'components/TableOfResults';
-import calculatePrimes from 'utils/calculatePrimes';
-import { startBenchmark, endBenchmark } from 'utils/benchmark';
-import PrimeWorker from 'workers/prime.worker.js';
+import Controls from './components/Controls';
+import Hero from './components/Hero';
+import StatusBar, { updateWorkloadPill, updatePoolSizePill } from './components/StatusBar';
+import { announce, publish } from './components/TableOfResults';
+import calculatePrimes from './utils/calculatePrimes';
+import { startBenchmark, endBenchmark } from './utils/benchmark';
+import PrimeWorker from './workers/prime.worker.js?worker';
 import {
   START_WORK,
   CHANGE_WORKLOAD,
@@ -12,8 +12,8 @@ import {
   CHANGE_TAG,
   PARALLEL_WORK_TYPE,
   SERIAL_WORK_TYPE,
-} from 'constants/constants';
-import uuid from 'uuid/v4';
+} from './constants/constants';
+import { v4 as uuid } from 'uuid';
 import './main.css';
 
 // Amount of primes to search for
