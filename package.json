@@ -1,5 +1,6 @@
 {
   "name": "web-workers-poc",
+  "homepage": "https://rafael-mindreau.github.io/web-worker-poc/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
